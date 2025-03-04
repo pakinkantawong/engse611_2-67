@@ -3,36 +3,100 @@
  https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables
 **/
 :root {
-    --grid-size: 450px;
-    --margin-size: 10px;
-    --square-size: calc((var(--grid-size) / 3) - var(--margin-size));
-  }
-  
-  body {
-    font-family: sans-serif;
-  }
-  
-  #grid {
-    align-content: space-between;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    height: var(--grid-size);
-    width: var(--grid-size);
-  }
-  
-  #grid div {
-    background-color: white;
-    height: var(--square-size);
-    width: var(--square-size);
-  
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  #grid div img {
-    width: 100%;
-  }
-  
+  --grid-size: 450px;
+  --margin-size: 10px;
+  --square-size: calc((var(--grid-size) / 3) - var(--margin-size));
+
+  /* พาเลตต์สีพาสเทล */
+  --bg-color: #f8f1f6;
+  --grid-bg: #ffdde1;
+  --square-bg: #ffcad4;
+  --square-border: #ffb3c1;
+  --text-color: #6d597a;
+  --btn-bg: #ffb3c1;
+  --btn-hover: #ff8fab;
+}
+
+body {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--text-color);
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* กริดของ Tic-Tac-Toe */
+#grid {
+  align-content: space-between;
+  background-color: var(--grid-bg);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height: var(--grid-size);
+  width: var(--grid-size);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ช่องแต่ละช่อง */
+#grid div {
+  background-color: var(--square-bg);
+  height: var(--square-size);
+  width: var(--square-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: inset 0px -3px 6px rgba(0, 0, 0, 0.2);
+}
+
+#grid div:hover {
+  background-color: #ffb3c1;
+  transform: scale(1.05);
+}
+
+#grid div img {
+  width: 80%;
+  transition: transform 0.3s ease-in-out;
+}
+
+#grid div img:hover {
+  transform: rotate(10deg);
+}
+
+/* ปุ่ม Restart */
+#restart {
+  background-color: var(--btn-bg);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+#restart:hover {
+  background-color: var(--btn-hover);
+  transform: scale(1.1);
+}
+
+/* กล่องแสดงผล */
+#results {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 20px;
+  color: var(--text-color);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
