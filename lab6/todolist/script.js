@@ -1,41 +1,45 @@
-const from = document.querySelector("form");
+const form = document.querySelector("form");
 const todoInput = document.querySelector("#todo-input");
-const addbutton = document.querySelector("#add-button");
+const addButton = document.querySelector("#add-button");
 const todoList = document.querySelector("#todo-list");
 
-let todos = [ ];
+let todos = [];
 
-function addTodo(){
-    const todoText = todoInput.value;
+function addTodo() {
+    const todoText = todoInput.value.trim();
     
-    if (todoText.length > 0){
-        const todo = {
-            id: Date.now(),
-            text: todoText,
-            completed: false
-        };
-
-        todos.push(todo);
-
-        todoInput.value = '';
-
-        renderTodo();
-
-        console.log(todo.id);
-        console.log(todo.text);
-        console.log(todo.completed);
+    if (todoText.length === 0) {
+        alert("Please enter a task.");
+        return;
     }
-}
+    
+    if (todoText.length > 50) {
+        alert("Task cannot exceed 50 characters.");
+        return;
+    }
+    
+    const todo = {
+        id: Date.now(),
+        text: todoText,
+        completed: false
+    };
 
-function deleteTodo(id){
-    todos = todos.filter((todo) => todo.id !== id);
+    todos.push(todo);
+    todoInput.value = '';
     renderTodo();
 }
 
-function toggleCompleted(id){
-    console.log('Toggle: '+id);
-    todos = todos.map((todo) => {
-        if (todo.id === id){
+function deleteTodo(id) {
+    const confirmDelete = confirm("Are you sure you want to delete this task?");
+    if (confirmDelete) {
+        todos = todos.filter(todo => todo.id !== id);
+        renderTodo();
+    }
+}
+
+function toggleCompleted(id) {
+    todos = todos.map(todo => {
+        if (todo.id === id) {
             todo.completed = !todo.completed;
         }
         return todo;
@@ -43,31 +47,52 @@ function toggleCompleted(id){
     renderTodo();
 }
 
-function renderTodo(){
-    //console.log('Render Todo');
+function renderTodo() {
     todoList.innerHTML = '';
+    
+    todos.forEach(todo => {
+        const todoItem = document.createElement("li");
+        const todoText = document.createElement("span");
+        const deleteButton = document.createElement("button");
+        const checkButton = document.createElement("button");
+        
+        todoText.textContent = todo.text;
+        deleteButton.textContent = "Delete";
+        checkButton.textContent = todo.completed ? "✔" : "☐";
 
-    todos.forEach((todo)=> {
-            const todoItem = document.createElement("li");
-            const todoText = document.createElement("span");
-            const deleteButton = document.createElement("button");
-    
-            todoText.textContent = todo.text;
-            deleteButton.textContent = "Delete";
-    
-            deleteButton.addEventListener("click", () => deleteTodo(todo.id));
-    
-            todoItem.addEventListener("click", () => toggleCompleted(todo.id));
-    
-            todoItem.appendChild(todoText);
-            todoText.appendChild(deleteButton);
-            todoList.appendChild(todoItem);
+        checkButton.style.backgroundColor = "green";
+        checkButton.style.color = "white";
+        checkButton.style.border = "none";
+        checkButton.style.padding = "5px";
+        checkButton.style.marginRight = "10px";
+        checkButton.style.cursor = "pointer";
+        
+        if (todo.completed) {
+            todoText.style.textDecoration = "line-through";
+        } else {
+            todoText.style.textDecoration = "none";
+        }
+        
+        checkButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            toggleCompleted(todo.id);
+        });
+        
+        deleteButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            deleteTodo(todo.id);
+        });
+
+        todoItem.appendChild(checkButton);
+        todoItem.appendChild(todoText);
+        todoItem.appendChild(deleteButton);
+        todoList.appendChild(todoItem);
     });
 }
 
-from.addEventListener("submit", (event) => {
+form.addEventListener("submit", (event) => {
     event.preventDefault();
     addTodo();
-})
+});
 
 renderTodo();
